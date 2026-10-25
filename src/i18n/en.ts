@@ -1,0 +1,123 @@
+export const en = {
+  appName: 'Rural Work Connect',
+  tagline: 'Connecting Rural Daily-Wage Workers & Trusted Employers Across India',
+  subTagline: 'Fair wages, immediate bookings, transparent reviews, and safe rural worksites.',
+  
+  // Navigation & Common
+  nav: {
+    home: 'Home',
+    findJobs: 'Find Jobs',
+    findWorkers: 'Find Workers',
+    postJob: 'Post a Job',
+    myApplications: 'Applications',
+    myBookings: 'Bookings',
+    messages: 'Messages',
+    notifications: 'Notifications',
+    credits: 'Credits & Rewards',
+    payments: 'Payment Records',
+    safety: 'Safety & Helplines',
+    savedJobs: 'Saved Jobs',
+    profile: 'Profile',
+    dashboard: 'Dashboard',
+    admin: 'Admin Console',
+    settings: 'Settings',
+    help: 'Help & Support',
+    login: 'Login',
+    signup: 'Register',
+    logout: 'Sign Out',
+    switchRole: 'Switch Mode',
+    workerMode: 'Worker Mode',
+    employerMode: 'Employer Mode',
+  },
+
+  // Actions
+  actions: {
+    applyNow: 'Apply for Job',
+    bookWorker: 'Send Booking Request',
+    callEmployer: 'Call Employer',
+    messageUser: 'Send Message',
+    editProfile: 'Edit Profile',
+    saveJob: 'Save Job',
+    saved: 'Saved',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    submit: 'Submit',
+    search: 'Search',
+    filter: 'Filter',
+    reset: 'Reset',
+    listen: 'Listen (Audio)',
+    stopAudio: 'Stop Audio',
+    voiceSearch: 'Tap to speak',
+    listening: 'Listening...',
+    accept: 'Accept',
+    reject: 'Reject',
+    withdraw: 'Withdraw',
+    markCompleted: 'Mark Work Completed',
+    leaveReview: 'Leave Review',
+    reportScam: 'Report Problem / Scam',
+    blockUser: 'Block User',
+    viewDetails: 'View Details',
+    preview: 'Preview',
+    publish: 'Publish Job',
+    delete: 'Delete',
+  },
+
+  // Roles & Statuses
+  roles: {
+    worker: 'Daily-Wage Worker',
+    employer: 'Employer / Contractor / Farmer',
+    both: 'Both Worker & Employer',
+    admin: 'Platform Moderator / Admin',
+  },
+
+  status: {
+    available: 'Available for Work',
+    busy: 'Busy on Work',
+    unavailable: 'Unavailable',
+    pending: 'Pending',
+    accepted: 'Accepted',
+    rejected: 'Rejected',
+    in_progress: 'In Progress',
+    completed: 'Completed',
+    cancelled: 'Cancelled',
+    disputed: 'Disputed',
+    draft: 'Draft',
+    published: 'Active Listing',
+    paused: 'Paused',
+  },
+
+  // Dashboard & Profile
+  dashboard: {
+    welcome: 'Welcome back',
+    workerSummary: 'Your active applications, upcoming jobs, and earnings',
+    employerSummary: 'Your published jobs, applicant pool, and active workers',
+    totalCredits: 'Platform Credits',
+    averageRating: 'Rating',
+    completedJobs: 'Completed Works',
+    recommendedJobs: 'Recommended Nearby Work',
+    urgentJobs: 'Jobs Starting Soon',
+    quickActions: 'Quick Actions',
+  },
+
+  // Safety & Emergency
+  safety: {
+    title: 'Worker Safety & Support Center',
+    disclaimer: 'Rural Work Connect does not guarantee absolute worksite safety. Always verify work location, daylight travel, and agreed wage before proceeding.',
+    emergencyTitle: 'Direct Emergency Helplines (India)',
+    emergency112: '112 - National Emergency Response',
+    womenHelpline: '181 / 1091 - Women in Distress Helpline',
+    labourHelpline: '14434 - Shram Suvidha National Labour Helpline',
+    childline: '1098 - Childline Anti-Child Labour',
+    reportListing: 'Report Suspicious Job or Harassment',
+  },
+
+  // Payment
+  payment: {
+    methodCash: 'Cash at Worksite (Standard)',
+    methodUpi: 'Direct UPI Transfer',
+    methodEscrow: 'Platform Escrow (Coming Soon)',
+    gatewayNotConfigured: 'Online Gateway Not Configured (Recorded Cash/Direct UPI Active)',
+    wagePerDay: '₹ / day',
+    totalEstimated: 'Total Agreed Wage',
+  }
+};

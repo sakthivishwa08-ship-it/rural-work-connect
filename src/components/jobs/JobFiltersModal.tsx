@@ -2,6 +2,7 @@ import React from 'react';
 import { INDIAN_STATES_DISTRICTS, WORK_CATEGORIES } from '../../lib/locations';
 import { Modal } from '../common/Modal';
 import { Button } from '../common/Button';
+import { useI18n } from '../../i18n';
 
 export interface FilterState {
   state: string;
@@ -29,6 +30,8 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
   onFilterChange,
   onReset,
 }) => {
+  const { t } = useI18n();
+
   const selectedStateObj = INDIAN_STATES_DISTRICTS.find((s) => s.state === filters.state);
   const districtOptions = selectedStateObj ? selectedStateObj.districts : [];
 
@@ -40,22 +43,22 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Filter Job Listings" maxWidth="md">
+    <Modal isOpen={isOpen} onClose={onClose} title={t.filtersModal.title} maxWidth="md">
       <div className="space-y-4 text-sm text-gray-800">
         {/* Category */}
         <div>
           <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-            Work Category
+            {t.filtersModal.category}
           </label>
           <select
             value={filters.category}
             onChange={(e) => handleChange('category', e.target.value)}
             className="w-full p-3 rounded-xl border border-gray-300 bg-white focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm"
           >
-            <option value="">All Categories (வேலை வகைகள்)</option>
+            <option value="">{t.filtersModal.allCategories}</option>
             {WORK_CATEGORIES.map((cat) => (
               <option key={cat} value={cat}>
-                {cat}
+                {t.categories?.[cat as keyof typeof t.categories] || cat}
               </option>
             ))}
           </select>
@@ -65,7 +68,7 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-              State
+              {t.filtersModal.state}
             </label>
             <select
               value={filters.state}
@@ -75,7 +78,7 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
               }}
               className="w-full p-3 rounded-xl border border-gray-300 bg-white focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm"
             >
-              <option value="">All States</option>
+              <option value="">{t.filtersModal.allStates}</option>
               {INDIAN_STATES_DISTRICTS.map((s) => (
                 <option key={s.state} value={s.state}>
                   {s.state}
@@ -86,7 +89,7 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
 
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-              District
+              {t.filtersModal.district}
             </label>
             <select
               value={filters.district}
@@ -94,7 +97,7 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
               disabled={!filters.state}
               className="w-full p-3 rounded-xl border border-gray-300 bg-white focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm disabled:opacity-50"
             >
-              <option value="">All Districts</option>
+              <option value="">{t.filtersModal.allDistricts}</option>
               {districtOptions.map((d) => (
                 <option key={d} value={d}>
                   {d}
@@ -108,7 +111,7 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
         <div>
           <div className="flex justify-between items-center mb-1.5">
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
-              Daily Wage Range (₹ / day)
+              {t.filtersModal.wageRange}
             </label>
             <span className="text-xs font-semibold text-brand-700">
               ₹{filters.minWage} - ₹{filters.maxWage}+
@@ -116,7 +119,7 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <span className="text-xs text-gray-500">Min Wage</span>
+              <span className="text-xs text-gray-500">{t.filtersModal.minWage}</span>
               <input
                 type="number"
                 min="0"
@@ -127,7 +130,7 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
               />
             </div>
             <div>
-              <span className="text-xs text-gray-500">Max Wage</span>
+              <span className="text-xs text-gray-500">{t.filtersModal.maxWage}</span>
               <input
                 type="number"
                 min="0"
@@ -143,7 +146,7 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
         {/* Work Date */}
         <div>
           <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-            Work Date
+            {t.filtersModal.workDate}
           </label>
           <input
             type="date"
@@ -163,26 +166,26 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
             className="w-4 h-4 text-brand-600 rounded border-gray-300 focus:ring-brand-500"
           />
           <label htmlFor="mealsOnly" className="text-sm font-medium text-gray-700 cursor-pointer">
-            Only show jobs with free food/meals provided
+            {t.filtersModal.mealsOnly}
           </label>
         </div>
 
         {/* Sort By */}
         <div>
           <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-            Sort Listings By
+            {t.filtersModal.sortBy}
           </label>
           <div className="grid grid-cols-2 gap-2">
             {[
-              { id: 'newest', label: 'Newest Listed' },
-              { id: 'wage_high', label: 'Wage: High to Low' },
-              { id: 'wage_low', label: 'Wage: Low to High' },
-              { id: 'earliest', label: 'Earliest Start Date' },
+              { id: 'newest', label: t.filtersModal.newest },
+              { id: 'wage_high', label: t.filtersModal.wageHigh },
+              { id: 'wage_low', label: t.filtersModal.wageLow },
+              { id: 'earliest', label: t.filtersModal.earliest },
             ].map((option) => (
               <button
                 key={option.id}
                 type="button"
-                onClick={() => handleChange('sortBy', option.id)}
+                onClick={() => handleChange('sortBy', option.id as any)}
                 className={`p-2.5 rounded-xl text-xs font-semibold border transition-all text-center ${
                   filters.sortBy === option.id
                     ? 'bg-brand-50 border-brand-500 text-brand-800 ring-1 ring-brand-500'
@@ -198,10 +201,10 @@ export const JobFiltersModal: React.FC<JobFiltersModalProps> = ({
         {/* Footer Actions */}
         <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
           <Button variant="ghost" size="sm" onClick={onReset}>
-            Clear All Filters
+            {t.filtersModal.clearAll}
           </Button>
           <Button variant="primary" size="md" onClick={onClose}>
-            Apply Filters
+            {t.filtersModal.applyBtn}
           </Button>
         </div>
       </div>

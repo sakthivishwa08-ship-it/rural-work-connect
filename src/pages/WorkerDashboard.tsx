@@ -68,7 +68,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900">
-                  {t.dashboard.welcome}, {currentUser?.fullName || 'Worker'}!
+                  {t.workerDashboard.welcome}, {currentUser?.fullName || 'Worker'}!
                 </h1>
                 {currentUser?.isVerified && (
                   <Badge variant="success" size="sm" icon={<CheckCircle className="h-3 w-3" />}>
@@ -86,7 +86,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
           {/* Availability Status Toggle */}
           <div className="bg-gray-50 p-3 rounded-2xl border border-gray-200/80">
             <span className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">
-              Current Work Status
+              {t.workerDashboard.currentStatus}
             </span>
             <div className="flex items-center gap-1.5">
               <button
@@ -98,7 +98,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
-                ● Available (வேலைக்கு தயார்)
+                {t.workerDashboard.availableBtn}
               </button>
 
               <button
@@ -110,7 +110,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
-                ● Busy
+                {t.workerDashboard.busyBtn}
               </button>
 
               <button
@@ -122,7 +122,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
                     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
-                ● Off
+                {t.workerDashboard.offBtn}
               </button>
             </div>
           </div>
@@ -131,15 +131,15 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
         {/* 4 Core Summary Metrics */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 pt-6 border-t border-gray-100">
           <div className="bg-brand-50/60 p-4 rounded-2xl border border-brand-100">
-            <span className="text-xs text-brand-800 font-semibold block mb-1">Completed Works</span>
+            <span className="text-xs text-brand-800 font-semibold block mb-1">{t.workerDashboard.completedWorks}</span>
             <span className="text-2xl font-extrabold text-brand-900">
               {currentWorkerProfile?.completedJobsCount || 0}
             </span>
-            <span className="text-[11px] text-brand-700 block mt-0.5">Verified daily jobs</span>
+            <span className="text-[11px] text-brand-700 block mt-0.5">{t.workerDashboard.completedSub}</span>
           </div>
 
           <div className="bg-amber-50/60 p-4 rounded-2xl border border-amber-100">
-            <span className="text-xs text-amber-800 font-semibold block mb-1">Average Rating</span>
+            <span className="text-xs text-amber-800 font-semibold block mb-1">{t.workerDashboard.avgRating}</span>
             <div className="flex items-center gap-1.5">
               <span className="text-2xl font-extrabold text-amber-900">
                 {currentWorkerProfile?.averageRating && currentWorkerProfile.averageRating > 0
@@ -149,27 +149,27 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
               <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
             </div>
             <span className="text-[11px] text-amber-700 block mt-0.5">
-              {currentWorkerProfile?.totalReviewsCount || 0} reviews received
+              {currentWorkerProfile?.totalReviewsCount || 0} {t.workerDashboard.reviewsReceived}
             </span>
           </div>
 
           <div className="bg-sky-50/60 p-4 rounded-2xl border border-sky-100">
-            <span className="text-xs text-sky-800 font-semibold block mb-1">Reward Credits</span>
+            <span className="text-xs text-sky-800 font-semibold block mb-1">{t.workerDashboard.rewardCredits}</span>
             <div className="flex items-center gap-1">
               <Coins className="h-5 w-5 text-sky-600" />
               <span className="text-2xl font-extrabold text-sky-900">
                 {creditAccount?.balance || 50}
               </span>
             </div>
-            <span className="text-[11px] text-sky-700 block mt-0.5">Internal platform points</span>
+            <span className="text-[11px] text-sky-700 block mt-0.5">{t.workerDashboard.creditsSub}</span>
           </div>
 
           <div className="bg-purple-50/60 p-4 rounded-2xl border border-purple-100">
-            <span className="text-xs text-purple-800 font-semibold block mb-1">Active Bookings</span>
+            <span className="text-xs text-purple-800 font-semibold block mb-1">{t.workerDashboard.activeBookings}</span>
             <span className="text-2xl font-extrabold text-purple-900">
               {upcomingBookings.length}
             </span>
-            <span className="text-[11px] text-purple-700 block mt-0.5">Scheduled daily works</span>
+            <span className="text-[11px] text-purple-700 block mt-0.5">{t.workerDashboard.bookingsSub}</span>
           </div>
         </div>
       </div>
@@ -181,7 +181,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg sm:text-xl font-extrabold text-gray-900">
-            Your Upcoming Scheduled Work
+            {t.workerDashboard.upcomingWorkTitle}
           </h2>
           <button
             onClick={() => onNavigate('bookings')}
@@ -193,12 +193,12 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
 
         {upcomingBookings.length === 0 ? (
           <div className="bg-white rounded-2xl border border-gray-200/80 p-6 text-center text-sm text-gray-500">
-            No upcoming jobs scheduled yet.{' '}
+            {t.workerDashboard.noUpcoming}{' '}
             <button
               onClick={() => onNavigate('job-search')}
               className="text-brand-600 font-bold underline ml-1"
             >
-              Browse available jobs
+              {t.workerDashboard.browseJobs}
             </button>
           </div>
         ) : (
@@ -247,7 +247,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg sm:text-xl font-extrabold text-gray-900">
-            Recommended Daily Jobs for You
+            {t.workerDashboard.recommendedTitle}
           </h2>
           <Button
             variant="outline"
@@ -255,7 +255,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({ onNavigate, on
             onClick={() => onNavigate('job-search')}
             icon={<ArrowRight className="h-4 w-4" />}
           >
-            Explore All Jobs
+            {t.actions.viewAllJobs}
           </Button>
         </div>
 

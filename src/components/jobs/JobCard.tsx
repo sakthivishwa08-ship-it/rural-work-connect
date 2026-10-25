@@ -17,6 +17,7 @@ import { Button } from '../common/Button';
 import { SpeakButton } from '../common/SpeakButton';
 import { useApp } from '../../lib/store';
 import { useI18n } from '../../i18n';
+import { getTranslatedJobSpeech } from '../../lib/speech';
 
 interface JobCardProps {
   job: Job;
@@ -32,12 +33,15 @@ export const JobCard: React.FC<JobCardProps> = ({
   hasApplied = false,
 }) => {
   const { savedJobIds, toggleSaveJob } = useApp();
-  const { t } = useI18n();
+  const { language, t } = useI18n();
 
   const isSaved = savedJobIds.includes(job.id);
 
-  // Audio summary for low-literacy workers
-  const speechText = `${job.title}. ${job.category}. Located at ${job.villageOrTown}, ${job.district}. Daily wage ${job.dailyWage} rupees per day. Starting on ${job.workDate} at ${job.startTime}. ${job.mealsProvided ? 'Meals provided.' : ''}`;
+  // Fully translated native audio summary
+  const speechText = getTranslatedJobSpeech(job, language);
+
+  const displayCategory =
+    t.categories?.[job.category as keyof typeof t.categories] || job.category;
 
   return (
     <div
@@ -48,7 +52,7 @@ export const JobCard: React.FC<JobCardProps> = ({
         {/* Top bar: Category + Audio + Bookmark */}
         <div className="flex items-center justify-between gap-2 mb-2.5">
           <Badge variant="brand" size="sm">
-            {job.category}
+            {displayCategory}
           </Badge>
 
           <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
@@ -61,7 +65,7 @@ export const JobCard: React.FC<JobCardProps> = ({
                   ? 'bg-amber-50 text-amber-600 border-amber-300'
                   : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100 border-gray-200'
               }`}
-              title={isSaved ? 'Saved job' : 'Save job'}
+              title={isSaved ? t.actions.saved : t.actions.saveJob}
               aria-label="Save Job"
             >
               <Bookmark className={`h-4 w-4 ${isSaved ? 'fill-amber-500' : ''}`} />
@@ -105,7 +109,7 @@ export const JobCard: React.FC<JobCardProps> = ({
           </div>
           <div className="flex items-center gap-1.5">
             <Users className="h-4 w-4 text-gray-400 flex-shrink-0" />
-            <span>{job.workersHired} / {job.workersNeeded} workers</span>
+            <span>{job.workersHired} / {job.workersNeeded} {t.employerDashboard?.workersNeeded || 'workers'}</span>
           </div>
         </div>
 
@@ -113,17 +117,17 @@ export const JobCard: React.FC<JobCardProps> = ({
         <div className="flex flex-wrap gap-1.5 mb-4">
           {job.mealsProvided && (
             <Badge variant="success" size="sm" icon={<Utensils className="h-3 w-3" />}>
-              Food Provided
+              {t.jobDetails?.foodProvided || 'Food Provided'}
             </Badge>
           )}
           {job.transportProvided && (
             <Badge variant="info" size="sm">
-              Transport Available
+              {t.jobDetails?.transportProvided || 'Transport Available'}
             </Badge>
           )}
           {job.genderPreference && job.genderPreference !== 'Any' && (
             <Badge variant="warning" size="sm">
-              Prefers {job.genderPreference}
+              {job.genderPreference}
             </Badge>
           )}
         </div>
@@ -133,7 +137,7 @@ export const JobCard: React.FC<JobCardProps> = ({
       <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-3">
         <div>
           <div className="text-[10px] uppercase font-semibold text-gray-400 tracking-wider">
-            Daily Wage
+            {t.jobDetails?.dailyWage || 'Daily Wage'}
           </div>
           <div className="text-lg sm:text-xl font-extrabold text-brand-700 flex items-center leading-none">
             <span>₹{job.dailyWage}</span>
@@ -144,7 +148,7 @@ export const JobCard: React.FC<JobCardProps> = ({
         <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
           {hasApplied ? (
             <Badge variant="info" size="md">
-              Applied
+              {t.jobDetails?.alreadyApplied || 'Applied'}
             </Badge>
           ) : onApply ? (
             <Button

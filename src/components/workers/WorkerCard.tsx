@@ -23,12 +23,12 @@ export const WorkerCard: React.FC<WorkerCardProps> = ({
   const getAvailabilityBadge = (status: WorkerProfile['availabilityStatus']) => {
     switch (status) {
       case 'available':
-        return <Badge variant="success" size="sm">Available Now</Badge>;
+        return <Badge variant="success" size="sm">{t.workerDiscovery.availableNow}</Badge>;
       case 'busy':
-        return <Badge variant="warning" size="sm">Busy on Work</Badge>;
+        return <Badge variant="warning" size="sm">{t.workerDiscovery.busyOnWork}</Badge>;
       case 'unavailable':
       default:
-        return <Badge variant="neutral" size="sm">Unavailable</Badge>;
+        return <Badge variant="neutral" size="sm">{t.workerDiscovery.unavailable}</Badge>;
     }
   };
 
@@ -113,12 +113,12 @@ export const WorkerCard: React.FC<WorkerCardProps> = ({
         {/* Stats Row */}
         <div className="grid grid-cols-2 gap-2 text-xs text-gray-600 mb-4 bg-gray-50 p-2 rounded-xl border border-gray-100">
           <div>
-            <span className="text-gray-400 block text-[10px] uppercase">Experience</span>
+            <span className="text-gray-400 block text-[10px] uppercase">{t.workerDiscovery.experience}</span>
             <span className="font-semibold text-gray-800">{worker.experienceYears} Years</span>
           </div>
           <div>
-            <span className="text-gray-400 block text-[10px] uppercase">Completed Works</span>
-            <span className="font-semibold text-gray-800">{worker.completedJobsCount} Jobs</span>
+            <span className="text-gray-400 block text-[10px] uppercase">{t.workerDiscovery.completedWorks}</span>
+            <span className="font-semibold text-gray-800">{worker.completedJobsCount} Works</span>
           </div>
         </div>
       </div>
@@ -127,7 +127,7 @@ export const WorkerCard: React.FC<WorkerCardProps> = ({
       <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-3">
         <div>
           <span className="text-[10px] uppercase font-semibold text-gray-400 tracking-wider">
-            Expected Wage
+            {t.workerDiscovery.expectedWage}
           </span>
           <div className="text-base sm:text-lg font-extrabold text-brand-700 flex items-center">
             <span>₹{worker.expectedDailyWage}</span>

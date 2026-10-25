@@ -88,29 +88,29 @@ export const EmployerDashboard: React.FC<EmployerDashboardProps> = ({ onNavigate
         {/* 4 Metric Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 pt-6 border-t border-gray-100">
           <div className="bg-sky-50/60 p-4 rounded-2xl border border-sky-100">
-            <span className="text-xs text-sky-800 font-semibold block mb-1">Active Job Listings</span>
+            <span className="text-xs text-sky-800 font-semibold block mb-1">{t.employerDashboard.activeJobsTitle}</span>
             <span className="text-2xl font-extrabold text-sky-900">{activeJobs.length}</span>
-            <span className="text-[11px] text-sky-700 block mt-0.5">Currently hiring</span>
+            <span className="text-[11px] text-sky-700 block mt-0.5">{t.employerDashboard.activeJobsSub}</span>
           </div>
 
           <div className="bg-amber-50/60 p-4 rounded-2xl border border-amber-100">
-            <span className="text-xs text-amber-800 font-semibold block mb-1">Pending Applicants</span>
+            <span className="text-xs text-amber-800 font-semibold block mb-1">{t.employerDashboard.pendingApplicants}</span>
             <span className="text-2xl font-extrabold text-amber-900">
               {pendingApplications.length}
             </span>
-            <span className="text-[11px] text-amber-700 block mt-0.5">Awaiting review</span>
+            <span className="text-[11px] text-amber-700 block mt-0.5">{t.employerDashboard.pendingSub}</span>
           </div>
 
           <div className="bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100">
-            <span className="text-xs text-emerald-800 font-semibold block mb-1">Scheduled Workers</span>
+            <span className="text-xs text-emerald-800 font-semibold block mb-1">{t.employerDashboard.scheduledWorkers}</span>
             <span className="text-2xl font-extrabold text-emerald-900">
               {scheduledBookings.length}
             </span>
-            <span className="text-[11px] text-emerald-700 block mt-0.5">Active bookings</span>
+            <span className="text-[11px] text-emerald-700 block mt-0.5">{t.employerDashboard.scheduledSub}</span>
           </div>
 
           <div className="bg-purple-50/60 p-4 rounded-2xl border border-purple-100">
-            <span className="text-xs text-purple-800 font-semibold block mb-1">Employer Rating</span>
+            <span className="text-xs text-purple-800 font-semibold block mb-1">{t.employerDashboard.employerRating}</span>
             <div className="flex items-center gap-1.5">
               <span className="text-2xl font-extrabold text-purple-900">
                 {currentEmployerProfile?.averageRating || '4.9'}
@@ -118,7 +118,7 @@ export const EmployerDashboard: React.FC<EmployerDashboardProps> = ({ onNavigate
               <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
             </div>
             <span className="text-[11px] text-purple-700 block mt-0.5">
-              {currentEmployerProfile?.totalReviewsCount || 31} worker reviews
+              {currentEmployerProfile?.totalReviewsCount || 31} {t.employerDashboard.workerReviews}
             </span>
           </div>
         </div>
@@ -129,7 +129,7 @@ export const EmployerDashboard: React.FC<EmployerDashboardProps> = ({ onNavigate
         <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-4 shadow-sm">
           <div>
             <h3 className="font-bold text-base">
-              You have {pendingApplications.length} new worker application(s)!
+              {t.employerDashboard.newApplicantsAlert} ({pendingApplications.length})
             </h3>
             <p className="text-xs text-amber-100 mt-0.5">
               Review applicant experience and confirm your worksite team.
@@ -141,7 +141,7 @@ export const EmployerDashboard: React.FC<EmployerDashboardProps> = ({ onNavigate
             onClick={() => onNavigate('applicants')}
             className="bg-white text-amber-900 hover:bg-amber-50 border-none font-bold"
           >
-            Review Applicants
+            {t.employerDashboard.reviewApplicantsBtn}
           </Button>
         </div>
       )}
@@ -150,7 +150,7 @@ export const EmployerDashboard: React.FC<EmployerDashboardProps> = ({ onNavigate
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg sm:text-xl font-extrabold text-gray-900">
-            Your Active Job Postings
+            {t.employerDashboard.activePostings}
           </h2>
           <Button
             variant="outline"
@@ -158,18 +158,18 @@ export const EmployerDashboard: React.FC<EmployerDashboardProps> = ({ onNavigate
             onClick={() => onNavigate('worker-discovery')}
             icon={<Users className="h-4 w-4" />}
           >
-            Search Available Workers
+            {t.employerDashboard.searchWorkersBtn}
           </Button>
         </div>
 
         {myJobs.length === 0 ? (
           <div className="bg-white rounded-2xl border border-gray-200/80 p-8 text-center text-sm text-gray-500">
-            You haven't posted any jobs yet.{' '}
+            {t.employerDashboard.noJobsYet}{' '}
             <button
               onClick={() => onNavigate('create-job')}
               className="text-brand-600 font-bold underline ml-1"
             >
-              Post your first daily job
+              {t.employerDashboard.postFirstJob}
             </button>
           </div>
         ) : (
@@ -196,13 +196,13 @@ export const EmployerDashboard: React.FC<EmployerDashboardProps> = ({ onNavigate
                   </p>
 
                   <div className="flex items-center justify-between bg-gray-50 p-2.5 rounded-xl text-xs mb-3">
-                    <span className="text-gray-600">Daily Wage:</span>
+                    <span className="text-gray-600">{t.jobDetails.dailyWage}:</span>
                     <strong className="text-brand-700 font-bold text-sm">₹{job.dailyWage} / day</strong>
                   </div>
 
                   <div className="flex items-center justify-between text-xs text-gray-600 mb-2">
-                    <span>Workers Needed:</span>
-                    <strong className="text-gray-900">{job.workersHired} / {job.workersNeeded} Hired</strong>
+                    <span>{t.employerDashboard.workersNeeded}:</span>
+                    <strong className="text-gray-900">{job.workersHired} / {job.workersNeeded} {t.employerDashboard.hired}</strong>
                   </div>
                 </div>
 
@@ -212,7 +212,7 @@ export const EmployerDashboard: React.FC<EmployerDashboardProps> = ({ onNavigate
                     size="sm"
                     onClick={() => onNavigate('job-details', { jobId: job.id })}
                   >
-                    View Details
+                    {t.actions.viewDetails}
                   </Button>
 
                   <Button
@@ -233,10 +233,10 @@ export const EmployerDashboard: React.FC<EmployerDashboardProps> = ({ onNavigate
       <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-100 rounded-3xl p-6 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="font-bold text-gray-900 text-base sm:text-lg">
-            Need skilled daily wage workers directly?
+            {t.workerDiscovery.title}?
           </h3>
           <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
-            Browse verified local masons, harvesters, tractor drivers, and painters with customer reviews.
+            {t.workerDiscovery.subtitle}
           </p>
         </div>
         <Button
@@ -245,7 +245,7 @@ export const EmployerDashboard: React.FC<EmployerDashboardProps> = ({ onNavigate
           onClick={() => onNavigate('worker-discovery')}
           icon={<Users className="h-4 w-4" />}
         >
-          Find Available Workers
+          {t.employerDashboard.searchWorkersBtn}
         </Button>
       </div>
     </div>

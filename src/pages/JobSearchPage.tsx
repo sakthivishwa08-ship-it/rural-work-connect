@@ -29,16 +29,17 @@ export const JobSearchPage: React.FC<JobSearchPageProps> = ({
   initialCategory = '',
 }) => {
   const { jobs, applications, currentWorkerProfile } = useApp();
-  const { t } = useI18n();
+  const { t, language } = useI18n();
 
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [recentSearches, setRecentSearches] = useState<string[]>([
-    'Harvesting',
-    'Masonry',
-    'Painting',
-    'Melur',
-  ]);
+  const [recentSearches, setRecentSearches] = useState<string[]>(
+    language === 'ta'
+      ? ['கொத்தனார்', 'அறுவடை', 'பெயிண்டிங்', 'மேலூர்']
+      : language === 'hi'
+      ? ['राजमिस्त्री', 'कटाई', 'रंगाई', 'ड्राइवर']
+      : ['Harvesting', 'Masonry', 'Painting', 'Melur']
+  );
 
   const [filters, setFilters] = useState<FilterState>({
     state: '',
@@ -128,10 +129,10 @@ export const JobSearchPage: React.FC<JobSearchPageProps> = ({
       {/* Search Header */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-          Find Daily-Wage Jobs
+          {t.searchPage?.title || 'Find Daily-Wage Jobs'}
         </h1>
         <p className="text-xs sm:text-sm text-gray-500 mt-1">
-          Search open worksites in your village, town, or district with daily cash or UPI wages
+          {t.searchPage?.subtitle || 'Search open worksites in your village, town, or district with daily cash or UPI wages'}
         </p>
       </div>
 
@@ -141,7 +142,7 @@ export const JobSearchPage: React.FC<JobSearchPageProps> = ({
           <VoiceSearchInput
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Search by job title, skill, or village name..."
+            placeholder={t.searchPage?.placeholder || 'Search by job title, skill, or village name...'}
           />
         </div>
 
@@ -154,7 +155,7 @@ export const JobSearchPage: React.FC<JobSearchPageProps> = ({
           }`}
         >
           <SlidersHorizontal className="h-4 w-4" />
-          <span>Filters</span>
+          <span>{t.searchPage?.filtersBtn || 'Filters'}</span>
           {activeFilterCount > 0 && (
             <span className="w-5 h-5 rounded-full bg-brand-600 text-white text-[11px] flex items-center justify-center font-bold">
               {activeFilterCount}
@@ -166,7 +167,7 @@ export const JobSearchPage: React.FC<JobSearchPageProps> = ({
       {/* Recent Searches Chips */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs text-gray-600">
         <span className="font-semibold text-gray-400 uppercase text-[10px] tracking-wider flex-shrink-0">
-          Popular:
+          {t.searchPage?.popularTitle || 'Popular:'}
         </span>
         {recentSearches.map((tag) => (
           <button
@@ -183,7 +184,7 @@ export const JobSearchPage: React.FC<JobSearchPageProps> = ({
             className="text-brand-600 font-semibold hover:underline flex items-center gap-1 flex-shrink-0 ml-auto"
           >
             <X className="h-3 w-3" />
-            <span>Clear search</span>
+            <span>{t.searchPage?.clearSearch || 'Clear search'}</span>
           </button>
         )}
       </div>
@@ -191,20 +192,20 @@ export const JobSearchPage: React.FC<JobSearchPageProps> = ({
       {/* Active Filter Indicators */}
       {activeFilterCount > 0 && (
         <div className="flex items-center gap-2 flex-wrap text-xs bg-brand-50/50 p-2.5 rounded-xl border border-brand-100">
-          <span className="font-semibold text-brand-900">Active Filters:</span>
+          <span className="font-semibold text-brand-900">{t.searchPage?.activeFilters || 'Active Filters:'}</span>
           {filters.category && (
             <span className="bg-white px-2 py-0.5 rounded-md border border-brand-200 text-brand-800">
-              Category: {filters.category}
+              {t.categories?.[filters.category as keyof typeof t.categories] || filters.category}
             </span>
           )}
           {filters.district && (
             <span className="bg-white px-2 py-0.5 rounded-md border border-brand-200 text-brand-800">
-              District: {filters.district}
+              {filters.district}
             </span>
           )}
           {filters.mealsOnly && (
             <span className="bg-white px-2 py-0.5 rounded-md border border-brand-200 text-brand-800">
-              Free Food Included
+              {t.jobDetails?.foodProvided || 'Food Provided'}
             </span>
           )}
           <button
@@ -212,24 +213,24 @@ export const JobSearchPage: React.FC<JobSearchPageProps> = ({
             className="text-brand-700 font-bold hover:underline ml-auto flex items-center gap-1"
           >
             <RotateCcw className="h-3 w-3" />
-            <span>Reset All</span>
+            <span>{t.searchPage?.resetAll || 'Reset All'}</span>
           </button>
         </div>
       )}
 
       {/* Results Count */}
       <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
-        <span>Showing {filteredJobs.length} available daily jobs</span>
-        <span className="capitalize">Sorted by: {filters.sortBy.replace('_', ' ')}</span>
+        <span>{filteredJobs.length} {t.searchPage?.showingCount || 'available daily jobs'}</span>
+        <span className="capitalize">{t.searchPage?.sortedBy || 'Sorted by'}: {filters.sortBy.replace('_', ' ')}</span>
       </div>
 
       {/* Jobs Grid or Empty State */}
       {filteredJobs.length === 0 ? (
         <EmptyState
           icon={<Search className="h-6 w-6" />}
-          title="No Matching Jobs Found"
-          description="Try broadening your search keywords, clearing your filters, or checking back soon as new daily jobs are posted throughout the day."
-          actionText="Clear All Filters"
+          title={t.searchPage?.noJobsTitle || 'No Matching Jobs Found'}
+          description={t.searchPage?.noJobsDesc || 'Try broadening your search keywords, clearing your filters, or checking back soon as new daily jobs are posted throughout the day.'}
+          actionText={t.searchPage?.clearFiltersBtn || 'Clear All Filters'}
           onAction={handleResetFilters}
         />
       ) : (

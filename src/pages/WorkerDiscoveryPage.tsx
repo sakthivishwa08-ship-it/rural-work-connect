@@ -44,7 +44,7 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
   const [durationDays, setDurationDays] = useState(1);
   const [agreedWage, setAgreedWage] = useState(700);
   const [workLocation, setWorkLocation] = useState(
-    currentEmployerProfile?.worksiteAddress || `${currentUser?.villageOrTown}, ${currentUser?.district}`
+    currentEmployerProfile?.worksiteAddress || `${currentUser?.villageOrTown || ''}, ${currentUser?.district || ''}`
   );
   const [workDescription, setWorkDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,7 +52,6 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
   const [bookingError, setBookingError] = useState<string | null>(null);
 
   // In demo state, let's pull workers from mock profiles
-  // Ramanathan (Mason, Madurai), Selvi (Harvesting, Thanjavur), Arulraj (Centering, Madurai)
   const mockWorkers: { profile: WorkerProfile; user: any }[] = [
     {
       profile: {
@@ -217,10 +216,10 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
       {/* Title */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-          Find Available Rural Workers
+          {t.workerDiscovery.title}
         </h1>
         <p className="text-xs sm:text-sm text-gray-500 mt-1">
-          Directly discover and book verified masons, farm hands, harvesters, and drivers near you
+          {t.workerDiscovery.subtitle}
         </p>
       </div>
 
@@ -230,7 +229,7 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
           <VoiceSearchInput
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Search by worker name, skill (e.g. Masonry, Harvesting), or village..."
+            placeholder={t.workerDiscovery.searchPlaceholder}
           />
         </div>
 
@@ -240,7 +239,7 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
             onChange={(e) => setSelectedDistrict(e.target.value)}
             className="p-3 rounded-2xl border border-gray-300 bg-white text-xs font-semibold focus:ring-2 focus:ring-brand-500"
           >
-            <option value="">All Districts</option>
+            <option value="">{t.workerDiscovery.allDistricts}</option>
             <option value="Madurai">Madurai</option>
             <option value="Thanjavur">Thanjavur</option>
             <option value="Coimbatore">Coimbatore</option>
@@ -253,7 +252,7 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
               onChange={(e) => setAvailabilityOnly(e.target.checked)}
               className="rounded text-brand-600 w-4 h-4"
             />
-            <span>Available Only</span>
+            <span>{t.workerDiscovery.availableOnly}</span>
           </label>
         </div>
       </div>
@@ -272,14 +271,14 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
       </div>
 
       {/* Direct Booking Modal */}
-      <Modal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} title="Send Work Booking Request" maxWidth="md">
+      <Modal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} title={t.workerDiscovery.bookModalTitle} maxWidth="md">
         <div className="space-y-4 text-sm text-gray-800">
           {bookingSuccess ? (
             <div className="text-center py-6">
               <CheckCircle className="h-12 w-12 text-emerald-600 mx-auto mb-2" />
-              <h3 className="font-bold text-gray-900 text-lg">Booking Request Sent!</h3>
+              <h3 className="font-bold text-gray-900 text-lg">{t.workerDiscovery.requestSent}</h3>
               <p className="text-xs text-gray-500 mt-1">
-                The worker has been notified and can confirm or accept your request.
+                {t.workerDiscovery.requestSentSub}
               </p>
             </div>
           ) : (
@@ -292,7 +291,9 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Work Date *</label>
+                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+                    {t.workerDiscovery.workDate}
+                  </label>
                   <input
                     type="date"
                     required
@@ -301,8 +302,11 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
                     className="w-full p-2.5 rounded-xl border border-gray-300 text-sm"
                   />
                 </div>
+
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Morning Start Time *</label>
+                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+                    {t.workerDiscovery.startTime}
+                  </label>
                   <input
                     type="time"
                     required
@@ -315,7 +319,23 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Agreed Daily Wage (₹) *</label>
+                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+                    {t.workerDiscovery.durationDays}
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="30"
+                    value={durationDays}
+                    onChange={(e) => setDurationDays(Number(e.target.value))}
+                    className="w-full p-2.5 rounded-xl border border-gray-300 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+                    {t.workerDiscovery.agreedDailyWage}
+                  </label>
                   <input
                     type="number"
                     min="100"
@@ -326,50 +346,39 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
                     className="w-full p-2.5 rounded-xl border border-gray-300 text-sm font-bold text-brand-700"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Duration (Days)</label>
-                  <input
-                    type="number"
-                    min="1"
-                    required
-                    value={durationDays}
-                    onChange={(e) => setDurationDays(Number(e.target.value))}
-                    className="w-full p-2.5 rounded-xl border border-gray-300 text-sm"
-                  />
-                </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Worksite Location Address *</label>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+                  {t.workerDiscovery.worksiteAddress}
+                </label>
                 <input
                   type="text"
                   required
                   value={workLocation}
                   onChange={(e) => setWorkLocation(e.target.value)}
+                  placeholder="e.g. South Paddy Field, Main Road, Alanganallur"
                   className="w-full p-2.5 rounded-xl border border-gray-300 text-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Work Description & Tasks *</label>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+                  {t.workerDiscovery.workDescription}
+                </label>
                 <textarea
                   rows={2}
                   required
                   value={workDescription}
                   onChange={(e) => setWorkDescription(e.target.value)}
-                  placeholder="e.g. Masonry plastering of 30-ft brick wall..."
+                  placeholder="e.g. Masonry compound wall repair with mortar plastering..."
                   className="w-full p-2.5 rounded-xl border border-gray-300 text-sm"
                 />
               </div>
 
-              <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 text-xs flex items-center justify-between">
-                <span className="text-gray-600">Total Work Value:</span>
-                <strong className="text-brand-700 text-base font-extrabold">₹{agreedWage * durationDays}</strong>
-              </div>
-
               <div className="pt-2 flex justify-end gap-2">
                 <Button variant="outline" size="sm" onClick={() => setIsBookingModalOpen(false)}>
-                  Cancel
+                  {t.actions.cancel}
                 </Button>
                 <Button
                   variant="primary"
@@ -377,7 +386,7 @@ export const WorkerDiscoveryPage: React.FC<WorkerDiscoveryPageProps> = ({ onNavi
                   onClick={handleConfirmDirectBooking}
                   isLoading={isSubmitting}
                 >
-                  Confirm & Send Request
+                  {t.workerDiscovery.sendRequestBtn}
                 </Button>
               </div>
             </>

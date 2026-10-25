@@ -27,7 +27,7 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onOpenEmergency }) => {
   const { jobs, currentUser } = useApp();
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const [searchTerm, setSearchTerm] = useState('');
 
   const publishedJobs = jobs.filter((j) => j.status === 'published').slice(0, 4);
@@ -44,18 +44,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onOpenEmer
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-100/80 text-brand-900 text-xs sm:text-sm font-semibold mb-6 border border-brand-200">
             <Sparkles className="h-4 w-4 text-brand-600" />
-            <span>தினக்கூலி வேலை & தொழிலாளர் இணைப்பு மேடை</span>
+            <span>{t.landing?.badge || 'India Daily-Wage Employment & Worker Connection Platform'}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight max-w-4xl mx-auto mb-4">
-            Connecting Rural Workers & Trusted Employers Across{' '}
+            {t.landing?.heroTitle || 'Connecting Rural Workers & Trusted Employers Across'}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-emerald-600 to-accent-600">
               India
             </span>
           </h1>
 
           <p className="text-base sm:text-xl text-gray-600 max-w-2xl mx-auto mb-8 font-normal leading-relaxed">
-            {t.subTagline} Find daily-wage agricultural, construction, and household work nearby with guaranteed fair wages.
+            {t.landing?.heroDesc || t.subTagline}
           </p>
 
           {/* Hero Voice Search Box */}
@@ -64,7 +64,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onOpenEmer
               value={searchTerm}
               onChange={setSearchTerm}
               onSearch={handleSearchSubmit}
-              placeholder="Search by work (e.g. Masonry, Harvesting) or Village..."
+              placeholder={t.landing?.searchPlaceholder || 'Search by work (e.g. Masonry, Harvesting) or Village...'}
             />
           </div>
 
@@ -91,23 +91,31 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onOpenEmer
             </Button>
           </div>
 
-          {/* Quick stats or key assurances */}
+          {/* 4 Pillars Grid */}
           <div className="mt-10 pt-8 border-t border-emerald-100/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center max-w-4xl mx-auto text-xs sm:text-sm">
             <div className="p-2">
-              <span className="block font-bold text-gray-900 text-base sm:text-lg">100% Free</span>
-              <span className="text-gray-500">Zero fees for daily workers</span>
+              <span className="block font-bold text-gray-900 text-base sm:text-lg">
+                {t.landing?.freeGuarantee || '100% Free'}
+              </span>
+              <span className="text-gray-500">{t.landing?.freeSub || 'Zero commission for daily workers'}</span>
             </div>
             <div className="p-2">
-              <span className="block font-bold text-gray-900 text-base sm:text-lg">Daily Wages</span>
-              <span className="text-gray-500">Cash on site or direct UPI</span>
+              <span className="block font-bold text-gray-900 text-base sm:text-lg">
+                {t.landing?.dailyWages || 'Daily Wages'}
+              </span>
+              <span className="text-gray-500">{t.landing?.dailyWagesSub || 'Cash on site or direct UPI'}</span>
             </div>
             <div className="p-2">
-              <span className="block font-bold text-gray-900 text-base sm:text-lg">Voice Search</span>
-              <span className="text-gray-500">Speak in Tamil, Hindi, English</span>
+              <span className="block font-bold text-gray-900 text-base sm:text-lg">
+                {t.landing?.voiceSearchTitle || 'Voice Search'}
+              </span>
+              <span className="text-gray-500">{t.landing?.voiceSearchSub || 'Speak in Tamil, Hindi, English'}</span>
             </div>
             <div className="p-2">
-              <span className="block font-bold text-gray-900 text-base sm:text-lg">Safety First</span>
-              <span className="text-gray-500">Emergency & 112 direct links</span>
+              <span className="block font-bold text-gray-900 text-base sm:text-lg">
+                {t.landing?.safetyTitle || 'Safety First'}
+              </span>
+              <span className="text-gray-500">{t.landing?.safetySub || 'Emergency & 112 direct links'}</span>
             </div>
           </div>
         </div>
@@ -118,10 +126,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onOpenEmer
         <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
           <div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-              Latest Work Available Nearby
+              {t.landing?.latestJobs || 'Latest Work Available Nearby'}
             </h2>
             <p className="text-sm text-gray-500 mt-1">
-              Real daily jobs posted by verified rural landowners and contractors
+              {t.landing?.latestJobsSub || 'Real daily jobs posted by verified rural landowners and contractors'}
             </p>
           </div>
 
@@ -131,7 +139,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onOpenEmer
             onClick={() => onNavigate('job-search')}
             icon={<ArrowRight className="h-4 w-4" />}
           >
-            View All Jobs
+            {t.actions?.viewAllJobs || 'View All Jobs'}
           </Button>
         </div>
 
@@ -147,35 +155,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onOpenEmer
         </div>
       </section>
 
-      {/* Work Categories Grid */}
+      {/* Work Categories Grid with Fully Translated Category Names */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-8">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-            Explore Rural Work by Category
+            {t.landing?.categoriesTitle || 'Explore Rural Work by Category'}
           </h2>
           <p className="text-sm text-gray-500 mt-2">
-            Find daily wage employment matching your specific skills and experience
+            {t.landing?.categoriesSub || 'Find daily wage employment matching your specific skills and experience'}
           </p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-          {WORK_CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => onNavigate('job-search', { category: cat })}
-              className="p-4 rounded-2xl bg-white border border-gray-200/90 hover:border-brand-500 hover:shadow-md transition-all text-left flex flex-col justify-between group active:scale-95"
-            >
-              <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold mb-3 group-hover:bg-brand-600 group-hover:text-white transition-colors">
-                <Briefcase className="h-5 w-5" />
-              </div>
-              <div>
-                <span className="font-bold text-xs sm:text-sm text-gray-900 block leading-tight mb-1 group-hover:text-brand-700">
-                  {cat}
-                </span>
-                <span className="text-[11px] text-gray-400">View daily jobs →</span>
-              </div>
-            </button>
-          ))}
+          {WORK_CATEGORIES.map((cat) => {
+            const translatedCat =
+              t.categories?.[cat as keyof typeof t.categories] || cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => onNavigate('job-search', { category: cat })}
+                className="p-4 rounded-2xl bg-white border border-gray-200/90 hover:border-brand-500 hover:shadow-md transition-all text-left flex flex-col justify-between group active:scale-95"
+              >
+                <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold mb-3 group-hover:bg-brand-600 group-hover:text-white transition-colors">
+                  <Briefcase className="h-5 w-5" />
+                </div>
+                <div>
+                  <span className="font-bold text-xs sm:text-sm text-gray-900 block leading-tight mb-1 group-hover:text-brand-700">
+                    {translatedCat}
+                  </span>
+                  <span className="text-[11px] text-gray-400">
+                    {t.actions?.viewDetails || 'View details'} →
+                  </span>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </section>
 
@@ -189,11 +203,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onOpenEmer
             </div>
 
             <h3 className="text-2xl sm:text-3xl font-extrabold mb-3 leading-tight">
-              Safety, Mutual Respect & Transparent Wages
+              {t.landing?.safetyBannerTitle || 'Safety, Mutual Respect & Transparent Wages'}
             </h3>
 
             <p className="text-emerald-100 text-xs sm:text-sm mb-6 leading-relaxed">
-              No middleman commission. Direct communication between farm owners, contractors, and daily wage workers. With verified identity reviews and 24x7 emergency helpline access.
+              {t.landing?.safetyBannerDesc || 'No middleman commission. Direct communication between farm owners, contractors, and daily wage workers. With verified identity reviews and 24x7 emergency helpline access.'}
             </p>
 
             <div className="flex flex-wrap gap-3">
@@ -203,7 +217,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onOpenEmer
                 onClick={() => onNavigate('safety')}
                 className="bg-white text-emerald-900 hover:bg-emerald-50 border-none font-bold"
               >
-                Read Safety Guidelines
+                {t.landing?.readGuidelines || 'Read Safety Guidelines'}
               </Button>
               <Button
                 variant="outline"
@@ -212,7 +226,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onOpenEmer
                 className="text-white border-white/40 hover:bg-white/10"
                 icon={<PhoneCall className="h-4 w-4 text-red-300" />}
               >
-                Helpline Contacts
+                {t.landing?.helplineContacts || 'Helpline Contacts'}
               </Button>
             </div>
           </div>

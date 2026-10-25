@@ -55,19 +55,19 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
   const getStatusBadge = (status: BookingStatus) => {
     switch (status) {
       case 'accepted':
-        return <Badge variant="success" size="sm">Confirmed / Scheduled</Badge>;
+        return <Badge variant="success" size="sm">{t.status.accepted}</Badge>;
       case 'in_progress':
-        return <Badge variant="info" size="sm">Work In Progress</Badge>;
+        return <Badge variant="info" size="sm">{t.status.in_progress}</Badge>;
       case 'completed':
-        return <Badge variant="brand" size="sm">Work Completed</Badge>;
+        return <Badge variant="brand" size="sm">{t.status.completed}</Badge>;
       case 'pending':
-        return <Badge variant="warning" size="sm">Pending Worker Response</Badge>;
+        return <Badge variant="warning" size="sm">{t.status.pending}</Badge>;
       case 'rejected':
-        return <Badge variant="danger" size="sm">Declined</Badge>;
+        return <Badge variant="danger" size="sm">{t.status.rejected}</Badge>;
       case 'cancelled':
-        return <Badge variant="neutral" size="sm">Cancelled</Badge>;
+        return <Badge variant="neutral" size="sm">{t.status.cancelled}</Badge>;
       case 'disputed':
-        return <Badge variant="danger" size="sm">Dispute Open</Badge>;
+        return <Badge variant="danger" size="sm">{t.status.disputed}</Badge>;
       default:
         return <Badge variant="neutral" size="sm">{status}</Badge>;
     }
@@ -102,19 +102,19 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
     <div className="max-w-5xl mx-auto px-4 py-6 sm:py-10 space-y-6">
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-          Work Bookings & Schedule
+          {t.bookingsPage.title}
         </h1>
         <p className="text-xs sm:text-sm text-gray-500 mt-1">
-          Confirmed daily jobs, worksite progress tracking, and completed work verification
+          {t.bookingsPage.subtitle}
         </p>
       </div>
 
       {myBookings.length === 0 ? (
         <EmptyState
           icon={<Calendar className="h-6 w-6" />}
-          title="No Bookings Yet"
-          description="You don't have any active or past work bookings. Apply for daily jobs or hire local workers to get started."
-          actionText="Search Daily Jobs"
+          title={t.bookingsPage.noBookingsTitle}
+          description={t.bookingsPage.noBookingsDesc}
+          actionText={t.bookingsPage.searchJobsBtn}
           onAction={() => onNavigate('job-search')}
         />
       ) : (
@@ -134,12 +134,12 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
                   <div className="flex items-center gap-2">
                     {getStatusBadge(b.status)}
                     <span className="text-xs text-gray-400 font-medium">
-                      Booking #{b.id.slice(-6)}
+                      #{b.id.slice(-6)}
                     </span>
                   </div>
                   <div className="text-xs font-semibold text-gray-600 flex items-center gap-1.5">
                     <Calendar className="h-4 w-4 text-gray-400" />
-                    <span>Work Date: <strong>{b.workDate}</strong> at {b.startTime.slice(0, 5)}</span>
+                    <span>{t.bookingsPage.workDate}: <strong>{b.workDate}</strong> at {b.startTime.slice(0, 5)}</span>
                   </div>
                 </div>
 
@@ -171,7 +171,7 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
                   <div className="bg-gray-50/80 p-4 rounded-2xl border border-gray-100 flex flex-col justify-between">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-gray-400 block tracking-wider">
-                        Agreed Wage
+                        {t.bookingsPage.agreedWage}
                       </span>
                       <span className="text-2xl font-extrabold text-brand-700 block mt-0.5">
                         ₹{b.agreedWage} <span className="text-xs font-normal text-gray-500">/ day</span>
@@ -202,7 +202,7 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
                       }}
                       icon={<MessageSquare className="h-4 w-4" />}
                     >
-                      Message
+                      {t.actions.messageUser}
                     </Button>
                   </div>
 
@@ -216,7 +216,7 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
                           onClick={() => handleStatusChange(b.id, 'rejected')}
                           icon={<XCircle className="h-4 w-4" />}
                         >
-                          Decline Work
+                          {t.actions.reject}
                         </Button>
                         <Button
                           variant="primary"
@@ -224,7 +224,7 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
                           onClick={() => handleStatusChange(b.id, 'accepted')}
                           icon={<CheckCircle className="h-4 w-4" />}
                         >
-                          Accept Booking
+                          {t.actions.accept}
                         </Button>
                       </>
                     )}
@@ -236,11 +236,11 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
                         size="sm"
                         onClick={() => handleStatusChange(b.id, 'in_progress')}
                       >
-                        Start Work Today
+                        {t.bookingsPage.startWorkToday}
                       </Button>
                     )}
 
-                    {/* Mark Completed (triggers +100 credits and review eligibility) */}
+                    {/* Mark Completed */}
                     {(b.status === 'accepted' || b.status === 'in_progress') && (
                       <Button
                         variant="primary"
@@ -248,7 +248,7 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
                         onClick={() => handleStatusChange(b.id, 'completed')}
                         icon={<FileCheck className="h-4 w-4" />}
                       >
-                        Mark Work Completed
+                        {t.bookingsPage.markCompleted}
                       </Button>
                     )}
 
@@ -256,7 +256,7 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
                     {b.status === 'completed' && (
                       alreadyReviewed ? (
                         <Badge variant="success" size="md">
-                          ✓ Review Submitted
+                          {t.bookingsPage.reviewSubmitted}
                         </Badge>
                       ) : (
                         <Button
@@ -265,7 +265,7 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
                           onClick={() => handleOpenReview(b.id)}
                           icon={<Star className="h-4 w-4" />}
                         >
-                          Leave Review & Rating
+                          {t.bookingsPage.leaveReviewBtn}
                         </Button>
                       )
                     )}
@@ -351,7 +351,7 @@ export const BookingDetailsHistoryPage: React.FC<BookingDetailsHistoryPageProps>
 
           <div className="pt-2 flex justify-end gap-2">
             <Button variant="outline" size="sm" onClick={() => setIsReviewModalOpen(false)}>
-              Cancel
+              {t.actions.cancel}
             </Button>
             <Button
               variant="primary"

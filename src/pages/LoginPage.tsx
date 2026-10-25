@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LogIn, Lock, Mail, AlertCircle, UserCheck } from 'lucide-react';
 import { useApp } from '../lib/store';
+import { useI18n } from '../i18n';
 import { Button } from '../components/common/Button';
 
 interface LoginPageProps {
@@ -9,6 +10,8 @@ interface LoginPageProps {
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
   const { login, loginAsDemoUser } = useApp();
+  const { t } = useI18n();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -37,10 +40,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
             <LogIn className="h-6 w-6" />
           </div>
           <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">
-            Sign In to Rural Work
+            {t.auth.signInTitle}
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Access your bookings, daily jobs, and platform credits
+            {t.auth.signInSubtitle}
           </p>
         </div>
 
@@ -54,7 +57,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-              Email Address
+              {t.auth.emailAddress}
             </label>
             <div className="relative">
               <Mail className="h-4 w-4 text-gray-400 absolute left-3.5 top-3.5" />
@@ -72,14 +75,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
-                Password
+                {t.auth.password}
               </label>
               <button
                 type="button"
                 onClick={() => onNavigate('password-recovery')}
                 className="text-xs text-brand-600 hover:underline font-medium"
               >
-                Forgot password?
+                {t.auth.forgotPassword}
               </button>
             </div>
             <div className="relative">
@@ -103,7 +106,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
               fullWidth
               isLoading={isLoading}
             >
-              Sign In
+              {t.auth.signInBtn}
             </Button>
           </div>
         </form>
@@ -111,7 +114,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
         {/* 1-Click Fast Demo Logins */}
         <div className="mt-8 pt-6 border-t border-gray-100">
           <div className="text-xs font-bold text-gray-400 uppercase tracking-wider text-center mb-3">
-            Quick 1-Click Testing Accounts
+            {t.auth.quickDemoAccounts}
           </div>
 
           <div className="grid grid-cols-2 gap-2">
@@ -123,7 +126,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
               className="p-2.5 rounded-xl border border-gray-200 hover:border-brand-400 hover:bg-brand-50/50 text-left transition-all"
             >
               <span className="block font-bold text-xs text-gray-900">Ramanathan</span>
-              <span className="text-[10px] text-brand-700 font-semibold">Worker (Mason)</span>
+              <span className="text-[10px] text-brand-700 font-semibold">{t.roles.worker} (Mason)</span>
             </button>
 
             <button
@@ -134,7 +137,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
               className="p-2.5 rounded-xl border border-gray-200 hover:border-sky-400 hover:bg-sky-50/50 text-left transition-all"
             >
               <span className="block font-bold text-xs text-gray-900">Sundaram</span>
-              <span className="text-[10px] text-sky-700 font-semibold">Employer (Farmer)</span>
+              <span className="text-[10px] text-sky-700 font-semibold">{t.roles.employer} (Farmer)</span>
             </button>
 
             <button
@@ -145,7 +148,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
               className="p-2.5 rounded-xl border border-gray-200 hover:border-purple-400 hover:bg-purple-50/50 text-left transition-all"
             >
               <span className="block font-bold text-xs text-gray-900">Arulraj</span>
-              <span className="text-[10px] text-purple-700 font-semibold">Both Roles</span>
+              <span className="text-[10px] text-purple-700 font-semibold">{t.roles.both}</span>
             </button>
 
             <button
@@ -156,18 +159,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
               className="p-2.5 rounded-xl border border-gray-200 hover:border-red-400 hover:bg-red-50/50 text-left transition-all"
             >
               <span className="block font-bold text-xs text-gray-900">Admin</span>
-              <span className="text-[10px] text-red-700 font-semibold">Labour Officer</span>
+              <span className="text-[10px] text-red-700 font-semibold">{t.roles.admin}</span>
             </button>
           </div>
         </div>
 
         <div className="mt-6 text-center text-xs text-gray-500">
-          New to Rural Work Connect?{' '}
+          {t.auth.newToPlatform}{' '}
           <button
             onClick={() => onNavigate('signup')}
             className="text-brand-700 font-bold hover:underline"
           >
-            Create an account
+            {t.auth.createAccount}
           </button>
         </div>
       </div>

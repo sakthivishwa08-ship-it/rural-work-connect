@@ -87,10 +87,10 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
             <UserCheck className="h-6 w-6" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-            Create an Account
+            {t.auth.registerTitle}
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            Join Rural Work Connect for daily-wage employment in your district
+            {t.auth.registerSubtitle}
           </p>
         </div>
 
@@ -105,13 +105,13 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
           {/* Account Role Selector */}
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
-              Select Account Type
+              {t.auth.accountType}
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               {[
-                { id: 'worker', title: 'Worker', desc: 'Find daily jobs & get paid' },
-                { id: 'employer', title: 'Employer', desc: 'Post jobs & hire workers' },
-                { id: 'both', title: 'Both', desc: 'Worker & Employer combined' },
+                { id: 'worker', title: t.roles.worker, desc: 'Find daily jobs & get paid' },
+                { id: 'employer', title: t.roles.employer, desc: 'Post jobs & hire workers' },
+                { id: 'both', title: t.roles.both, desc: 'Worker & Employer combined' },
               ].map((item) => (
                 <button
                   key={item.id}
@@ -136,7 +136,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Full Name *
+                {t.auth.fullName}
               </label>
               <input
                 type="text"
@@ -150,7 +150,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Phone Number *
+                {t.auth.phoneNumber}
               </label>
               <input
                 type="tel"
@@ -167,7 +167,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Email Address *
+                {t.auth.emailAddress} *
               </label>
               <input
                 type="email"
@@ -181,7 +181,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Preferred Language
+                {t.auth.preferredLanguage}
               </label>
               <select
                 value={preferredLang}
@@ -201,7 +201,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                State *
+                {t.jobForm.state}
               </label>
               <select
                 value={state}
@@ -222,7 +222,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                District *
+                {t.jobForm.district}
               </label>
               <select
                 value={district}
@@ -242,7 +242,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Village / Town *
+                {t.jobForm.villageOrTown}
               </label>
               <input
                 type="text"
@@ -256,7 +256,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                PIN Code (6 Digits) *
+                {t.jobForm.pincode}
               </label>
               <input
                 type="text"
@@ -274,7 +274,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Password *
+                {t.auth.password} *
               </label>
               <input
                 type="password"
@@ -288,7 +288,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Confirm Password *
+                {t.auth.confirmPassword}
               </label>
               <input
                 type="password"
@@ -301,7 +301,11 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          <div className="pt-4">
+          <div className="pt-2 text-[11px] text-gray-500 leading-relaxed">
+            {t.auth.privacyNote}
+          </div>
+
+          <div className="pt-2">
             <Button
               type="submit"
               variant="primary"
@@ -309,18 +313,18 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({ onNavigate }) => {
               fullWidth
               isLoading={isLoading}
             >
-              Register Account & Get 50 Free Credits
+              {t.auth.registerBtn}
             </Button>
           </div>
         </form>
 
         <div className="mt-6 text-center text-xs text-gray-500">
-          Already registered?{' '}
+          {t.auth.alreadyHaveAccount}{' '}
           <button
             onClick={() => onNavigate('login')}
             className="text-brand-700 font-bold hover:underline"
           >
-            Login to your account
+            {t.auth.signInBtn}
           </button>
         </div>
       </div>

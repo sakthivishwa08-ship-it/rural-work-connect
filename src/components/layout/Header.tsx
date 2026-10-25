@@ -139,7 +139,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                 title="Switch between Worker and Employer mode"
               >
                 <Repeat className="h-3.5 w-3.5 text-brand-600" />
-                <span>Mode: {activeRoleMode === 'worker' ? 'Worker' : 'Employer'}</span>
+                <span>{activeRoleMode === 'worker' ? t.roles.worker : t.roles.employer}</span>
               </button>
             )}
 

@@ -162,16 +162,16 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
         className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
-        <span>Back to Employer Dashboard</span>
+        <span>{t.jobForm.backToDashboard}</span>
       </button>
 
       <div className="bg-white rounded-3xl border border-gray-200/90 p-6 sm:p-10 shadow-xs">
         <div className="mb-6">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-            {existingJob ? 'Edit Daily Job Listing' : 'Post a New Daily Job'}
+            {existingJob ? t.jobForm.editTitle : t.jobForm.postTitle}
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Specify wage, worksite location, requirements, and worker count
+            {t.jobForm.subtitle}
           </p>
         </div>
 
@@ -186,14 +186,14 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           {/* Job Title */}
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-              Job Title *
+              {t.jobForm.jobTitle}
             </label>
             <input
               type="text"
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Paddy Field Harvesting & Sacking"
+              placeholder={t.jobForm.titlePlaceholder}
               className="w-full p-3 rounded-xl border border-gray-300 text-sm font-semibold focus:ring-2 focus:ring-brand-500 focus:outline-none"
             />
           </div>
@@ -201,7 +201,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           {/* Category */}
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-              Work Category *
+              {t.jobForm.category}
             </label>
             <select
               value={category}
@@ -210,7 +210,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
             >
               {WORK_CATEGORIES.map((c) => (
                 <option key={c} value={c}>
-                  {c}
+                  {t.categories?.[c as keyof typeof t.categories] || c}
                 </option>
               ))}
             </select>
@@ -220,7 +220,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Number of Workers Needed *
+                {t.jobForm.workersNeeded}
               </label>
               <input
                 type="number"
@@ -234,7 +234,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Daily Wage (₹ / day) *
+                {t.jobForm.dailyWage}
               </label>
               <input
                 type="number"
@@ -251,7 +251,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           {/* Payment Terms */}
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-              Payment Terms & Settlement *
+              {t.jobForm.paymentTerms}
             </label>
             <input
               type="text"
@@ -267,7 +267,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Work Start Date *
+                {t.jobForm.workDate}
               </label>
               <input
                 type="date"
@@ -280,7 +280,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Morning Start Time *
+                {t.jobForm.startTime}
               </label>
               <input
                 type="time"
@@ -293,7 +293,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Duration (Days) *
+                {t.jobForm.durationDays}
               </label>
               <input
                 type="number"
@@ -310,7 +310,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                State *
+                {t.jobForm.state}
               </label>
               <select
                 value={state}
@@ -331,7 +331,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                District *
+                {t.jobForm.district}
               </label>
               <select
                 value={district}
@@ -351,7 +351,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Village / Town *
+                {t.jobForm.villageOrTown}
               </label>
               <input
                 type="text"
@@ -365,7 +365,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
 
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                Worksite PIN Code *
+                {t.jobForm.pincode}
               </label>
               <input
                 type="text"
@@ -382,14 +382,14 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           {/* Worksite Landmark Address */}
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-              Exact Worksite Landmark & Address *
+              {t.jobForm.worksiteAddress}
             </label>
             <input
               type="text"
               required
               value={worksiteAddress}
               onChange={(e) => setWorksiteAddress(e.target.value)}
-              placeholder="e.g. Survey No. 44, Vettaikaranpudur Road, Near North Water Tank"
+              placeholder="e.g. Survey No. 44, Main Road, Near Water Tank"
               className="w-full p-3 rounded-xl border border-gray-300 text-sm"
             />
           </div>
@@ -397,7 +397,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           {/* Detailed Description */}
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-              Detailed Work Description *
+              {t.jobForm.description}
             </label>
             <textarea
               rows={4}
@@ -412,7 +412,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           {/* Amenities & Checkboxes */}
           <div className="pt-2 border-t border-gray-100 space-y-2">
             <span className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
-              Provided Amenities
+              {t.jobDetails.benefits}
             </span>
             <div className="flex flex-wrap gap-4 text-xs font-medium text-gray-700">
               <label className="flex items-center gap-1.5 cursor-pointer">
@@ -422,7 +422,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
                   onChange={(e) => setMealsProvided(e.target.checked)}
                   className="rounded text-brand-600 w-4 h-4"
                 />
-                <span>Free Meals / Lunch Provided</span>
+                <span>{t.jobForm.mealsProvided}</span>
               </label>
 
               <label className="flex items-center gap-1.5 cursor-pointer">
@@ -432,7 +432,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
                   onChange={(e) => setTransportProvided(e.target.checked)}
                   className="rounded text-brand-600 w-4 h-4"
                 />
-                <span>Worksite Transport / Pickup</span>
+                <span>{t.jobForm.transportProvided}</span>
               </label>
             </div>
           </div>
@@ -440,7 +440,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
           {/* Equipment note */}
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-              Equipment & Tools Note
+              {t.jobForm.equipmentNotes}
             </label>
             <input
               type="text"
@@ -462,7 +462,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
               }}
               icon={<Eye className="h-4 w-4" />}
             >
-              Preview Listing
+              {t.jobForm.previewBtn}
             </Button>
 
             <Button
@@ -473,14 +473,14 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
               isLoading={isLoading}
               icon={<CheckCircle className="h-4 w-4" />}
             >
-              {existingJob ? 'Save Changes' : 'Publish Job Listing'}
+              {existingJob ? t.jobForm.saveChangesBtn : t.jobForm.publishBtn}
             </Button>
           </div>
         </div>
       </div>
 
       {/* Preview Modal */}
-      <Modal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} title="Job Listing Preview" maxWidth="lg">
+      <Modal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} title={t.jobForm.previewBtn} maxWidth="lg">
         <div className="space-y-4 text-sm text-gray-800">
           <div>
             <span className="text-xs font-semibold text-brand-700 bg-brand-50 px-2 py-0.5 rounded">
@@ -494,7 +494,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-gray-50 p-3 rounded-xl text-xs">
             <div>
-              <span className="text-gray-400 block text-[10px] uppercase">Daily Wage</span>
+              <span className="text-gray-400 block text-[10px] uppercase">{t.jobDetails.dailyWage}</span>
               <strong className="text-brand-700 text-base">₹{dailyWage} / day</strong>
             </div>
             <div>
@@ -520,7 +520,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
 
           <div className="pt-4 flex justify-end gap-2 border-t border-gray-100">
             <Button variant="outline" size="sm" onClick={() => setIsPreviewOpen(false)}>
-              Edit Details
+              {t.actions.cancel}
             </Button>
             <Button
               variant="primary"
@@ -530,7 +530,7 @@ export const CreateEditJobPage: React.FC<CreateEditJobPageProps> = ({
                 handlePublish();
               }}
             >
-              Confirm & Publish
+              {t.jobForm.publishBtn}
             </Button>
           </div>
         </div>

@@ -3,6 +3,8 @@ import { en } from './en';
 import { ta } from './ta';
 import { hi } from './hi';
 import { te } from './te';
+import { kn } from './kn';
+import { ml } from './ml';
 import { SUPPORTED_LANGUAGES, LanguageInfo } from './languagesList';
 
 export type TranslationType = typeof en;
@@ -12,6 +14,8 @@ const translations: Record<string, TranslationType> = {
   ta,
   hi,
   te,
+  kn,
+  ml,
 };
 
 interface I18nContextType {
@@ -26,7 +30,7 @@ const I18nContext = createContext<I18nContextType | null>(null);
 
 export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<string>(() => {
-    return localStorage.getItem('rwc_lang') || 'en';
+    return localStorage.getItem('rwc_lang') || 'ta'; // Default to Tamil / Indian language
   });
 
   const setLanguage = (lang: string) => {

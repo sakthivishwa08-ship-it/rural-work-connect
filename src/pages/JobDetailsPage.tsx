@@ -23,6 +23,7 @@ import { Button } from '../components/common/Button';
 import { Badge } from '../components/common/Badge';
 import { SpeakButton } from '../components/common/SpeakButton';
 import { Modal } from '../components/common/Modal';
+import { getTranslatedJobSpeech } from '../lib/speech';
 
 interface JobDetailsPageProps {
   jobId: string;
@@ -40,7 +41,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
     toggleSaveJob,
     startOrGetConversation,
   } = useApp();
-  const { t } = useI18n();
+  const { language, t } = useI18n();
 
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [proposedWage, setProposedWage] = useState<number>(0);
@@ -57,7 +58,11 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
 
   const isSaved = savedJobIds.includes(job.id);
 
-  const speechText = `${job.title}. Category: ${job.category}. Location: ${job.villageOrTown}, ${job.district}. Daily wage: ${job.dailyWage} rupees per day. Payment terms: ${job.paymentTerms}. Starting date: ${job.workDate} at ${job.startTime}. Description: ${job.description}. ${job.mealsProvided ? 'Free food provided.' : ''}`;
+  // Full native language audio announcement for rural workers
+  const speechText = getTranslatedJobSpeech(job, language);
+
+  const displayCategory =
+    t.categories?.[job.category as keyof typeof t.categories] || job.category;
 
   const handleOpenApplyModal = () => {
     if (!currentUser) {
@@ -91,7 +96,6 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
       onNavigate('login');
       return;
     }
-    // Employer ID in mockData references ep-1 or ep-2, user-employer-1
     const convId = startOrGetConversation('user-employer-1', job.id);
     onNavigate('messaging', { conversationId: convId });
   };
@@ -104,7 +108,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
         className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
-        <span>Back to Job Search</span>
+        <span>{t.jobDetails.backBtn}</span>
       </button>
 
       {/* Main Details Card */}
@@ -112,7 +116,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
         {/* Top Badges & Audio Reader */}
         <div className="flex items-center justify-between gap-2 mb-3">
           <Badge variant="brand" size="md">
-            {job.category}
+            {displayCategory}
           </Badge>
 
           <div className="flex items-center gap-2">
@@ -125,7 +129,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
                   ? 'bg-amber-50 text-amber-600 border-amber-300'
                   : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100 border-gray-200'
               }`}
-              title={isSaved ? 'Saved job' : 'Save job'}
+              title={isSaved ? t.actions.saved : t.actions.saveJob}
             >
               <Bookmark className={`h-5 w-5 ${isSaved ? 'fill-amber-500' : ''}`} />
             </button>
@@ -143,7 +147,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
           {job.employerVerified && (
             <span className="text-emerald-600 inline-flex items-center gap-1 font-semibold text-xs">
               <CheckCircle className="h-4 w-4 fill-emerald-100" />
-              Verified Employer
+              Verified Landowner / Employer
             </span>
           )}
           {job.employerRating ? (
@@ -158,7 +162,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 bg-gray-50/70 p-4 rounded-2xl border border-gray-100">
           <div>
             <span className="text-[10px] uppercase font-bold text-gray-400 block tracking-wider">
-              Daily Wage
+              {t.jobDetails.dailyWage}
             </span>
             <span className="text-xl sm:text-2xl font-extrabold text-brand-700 block mt-0.5">
               ₹{job.dailyWage}
@@ -168,7 +172,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
 
           <div>
             <span className="text-[10px] uppercase font-bold text-gray-400 block tracking-wider">
-              Date & Start Time
+              {t.jobDetails.dateTime}
             </span>
             <span className="text-sm sm:text-base font-bold text-gray-800 block mt-0.5">
               {job.workDate}
@@ -178,7 +182,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
 
           <div>
             <span className="text-[10px] uppercase font-bold text-gray-400 block tracking-wider">
-              Duration
+              {t.jobDetails.duration}
             </span>
             <span className="text-sm sm:text-base font-bold text-gray-800 block mt-0.5">
               {job.durationDays} {job.durationDays > 1 ? 'Days' : 'Day'}
@@ -188,13 +192,13 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
 
           <div>
             <span className="text-[10px] uppercase font-bold text-gray-400 block tracking-wider">
-              Positions Open
+              {t.jobDetails.positionsOpen}
             </span>
             <span className="text-sm sm:text-base font-bold text-gray-800 block mt-0.5">
-              {job.workersHired} of {job.workersNeeded} Hired
+              {job.workersHired} of {job.workersNeeded}
             </span>
             <span className="text-[11px] text-emerald-600 font-semibold">
-              {job.workersNeeded - job.workersHired} slots left
+              {job.workersNeeded - job.workersHired} {t.jobDetails.slotsLeft}
             </span>
           </div>
         </div>
@@ -204,7 +208,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
           <div className="flex items-start gap-2.5">
             <MapPin className="h-5 w-5 text-brand-600 flex-shrink-0 mt-0.5" />
             <div>
-              <strong className="block text-gray-900 font-bold">Worksite Location Address:</strong>
+              <strong className="block text-gray-900 font-bold">{t.jobDetails.worksiteAddress}:</strong>
               <p className="text-gray-700 mt-0.5 leading-relaxed">
                 {job.worksiteAddress}, {job.villageOrTown}, {job.district}, {job.state} - {job.pincode}
               </p>
@@ -215,7 +219,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
         {/* Detailed Description */}
         <div className="space-y-3 mb-6">
           <h2 className="text-base sm:text-lg font-extrabold text-gray-900">
-            Work Description & Expectations
+            {t.jobDetails.workDescription}
           </h2>
           <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
             {job.description}
@@ -225,7 +229,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
         {/* Worksite Benefits & Conditions */}
         <div className="mb-6 space-y-2">
           <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-            Worksite Benefits & Amenities
+            {t.jobDetails.benefits}
           </h3>
           <div className="flex flex-wrap gap-2 text-xs">
             <span className={`px-3 py-1.5 rounded-xl border font-semibold flex items-center gap-1.5 ${
@@ -234,7 +238,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
                 : 'bg-gray-100 text-gray-500 border-gray-200'
             }`}>
               <Utensils className="h-3.5 w-3.5" />
-              <span>{job.mealsProvided ? 'Meals / Food Provided' : 'Meals Not Included'}</span>
+              <span>{job.mealsProvided ? t.jobDetails.foodProvided : t.jobDetails.foodNotProvided}</span>
             </span>
 
             <span className={`px-3 py-1.5 rounded-xl border font-semibold flex items-center gap-1.5 ${
@@ -243,12 +247,12 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
                 : 'bg-gray-100 text-gray-500 border-gray-200'
             }`}>
               <Truck className="h-3.5 w-3.5" />
-              <span>{job.transportProvided ? 'Worksite Transport Provided' : 'Own Travel Required'}</span>
+              <span>{job.transportProvided ? t.jobDetails.transportProvided : t.jobDetails.transportNotProvided}</span>
             </span>
 
             {job.genderPreference && job.genderPreference !== 'Any' && (
               <span className="px-3 py-1.5 rounded-xl border font-semibold bg-amber-50 text-amber-800 border-amber-200">
-                Prefers: {job.genderPreference} ({job.genderPreferenceReason || 'Work requirement'})
+                Prefers: {job.genderPreference}
               </span>
             )}
           </div>
@@ -257,7 +261,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
         {/* Equipment & Tools Needed */}
         {job.equipmentRequirements && (
           <div className="mb-8 p-3.5 rounded-xl bg-gray-50 border border-gray-200 text-xs text-gray-700">
-            <strong className="block font-bold text-gray-900 mb-0.5">Equipment / Tools Note:</strong>
+            <strong className="block font-bold text-gray-900 mb-0.5">{t.jobDetails.equipmentNote}:</strong>
             {job.equipmentRequirements}
           </div>
         )}
@@ -270,7 +274,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
               className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-red-700 font-semibold transition-colors"
             >
               <AlertTriangle className="h-4 w-4 text-red-500" />
-              <span>Report this job listing</span>
+              <span>{t.jobDetails.reportListing}</span>
             </button>
           </div>
 
@@ -281,12 +285,12 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
               onClick={handleMessageEmployer}
               icon={<MessageSquare className="h-4 w-4" />}
             >
-              Contact Employer
+              {t.jobDetails.contactEmployer}
             </Button>
 
             {hasAlreadyApplied ? (
               <Button variant="outline" size="md" disabled>
-                ✓ Application Submitted
+                {t.jobDetails.alreadyApplied}
               </Button>
             ) : (
               <Button
@@ -295,7 +299,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
                 onClick={handleOpenApplyModal}
                 icon={<Send className="h-4 w-4" />}
               >
-                Apply for this Work
+                {t.jobDetails.applyBtn}
               </Button>
             )}
           </div>
@@ -303,12 +307,12 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
       </div>
 
       {/* Application Modal */}
-      <Modal isOpen={isApplyModalOpen} onClose={() => setIsApplyModalOpen(false)} title="Apply for Job" maxWidth="md">
+      <Modal isOpen={isApplyModalOpen} onClose={() => setIsApplyModalOpen(false)} title={t.jobDetails.applyModalTitle} maxWidth="md">
         <div className="space-y-4 text-sm">
           {applySuccess ? (
             <div className="text-center py-6">
               <CheckCircle className="h-12 w-12 text-emerald-600 mx-auto mb-2" />
-              <h3 className="font-bold text-gray-900 text-lg">Application Submitted!</h3>
+              <h3 className="font-bold text-gray-900 text-lg">{t.jobDetails.alreadyApplied}</h3>
               <p className="text-xs text-gray-500 mt-1">
                 The employer has been notified and will review your profile.
               </p>
@@ -323,7 +327,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
 
               <div>
                 <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
-                  Proposed Daily Wage (₹ / day)
+                  {t.jobDetails.proposedWage}
                 </label>
                 <input
                   type="number"
@@ -334,19 +338,19 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
                   className="w-full p-3 rounded-xl border border-gray-300 text-sm font-bold text-brand-700"
                 />
                 <span className="text-[11px] text-gray-400 mt-1 block">
-                  Employer's posted wage: ₹{job.dailyWage} / day
+                  {t.jobDetails.employerPostedWage}: ₹{job.dailyWage} / day
                 </span>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
-                  Message to Employer (Optional)
+                  {t.jobDetails.messageOptional}
                 </label>
                 <textarea
                   rows={3}
                   value={applyMessage}
                   onChange={(e) => setApplyMessage(e.target.value)}
-                  placeholder="e.g. Vanakkam, I have 5 years experience in paddy harvesting and live nearby in Alanganallur..."
+                  placeholder="e.g. Vanakkam, I have 5 years experience in paddy harvesting and live nearby..."
                   className="w-full p-3 rounded-xl border border-gray-300 text-sm"
                 />
               </div>
@@ -360,7 +364,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
 
               <div className="pt-2 flex justify-end gap-2">
                 <Button variant="outline" size="sm" onClick={() => setIsApplyModalOpen(false)}>
-                  Cancel
+                  {t.actions.cancel}
                 </Button>
                 <Button
                   variant="primary"
@@ -368,7 +372,7 @@ export const JobDetailsPage: React.FC<JobDetailsPageProps> = ({ jobId, onNavigat
                   onClick={handleConfirmApply}
                   isLoading={isSubmitting}
                 >
-                  Confirm & Submit Application
+                  {t.jobDetails.submitApplicationBtn}
                 </Button>
               </div>
             </>
